@@ -2,25 +2,26 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 
 package microcode is
-    --substate defines
-    type uPC_substate_type is (S_BASIC, S_PC, S_PCinc, S_NOP, S_LD, S_ST);
-    subtype uPC_state_type is std_logic_vector(1 downto 0);
 
-    constant uPC0 : uPC_state_type := "00";
-    constant uPC1 : uPC_state_type := "01";
-    constant uPC2 : uPC_state_type := "10";
-    constant uPC3 : uPC_state_type := "11";
-   
-    subtype op_alu is std_logic_vector(2 downto 0);
     subtype opcode is std_logic_vector(3 downto 0);
     subtype reg_code is std_logic_vector(2 downto 0);
-    subtype instruction is std_logic_vector(15 downto 0);
-    type program is array(0 to 255) of std_logic_vector(15 downto 0); --M registers each of N bits (2^M addresses)
-
     subtype immediate is std_logic_vector(8 downto 0);
+    subtype instruction is std_logic_vector(15 downto 0); --16bits instruction
 
-    constant Tail3 : reg_code := (others => '0');   
-    --opcodes
+    --type uPC_substate_type is (S_BASIC, S_PC, S_PCinc, S_NOP, S_LD, S_ST);
+    --subtype uPC_state_type is std_logic_vector(1 downto 0);
+
+    type program is array(natural range <>) of Instruction; --M registers each of N bits (2^M addresses)
+    --constant uPC0 : uPC_state_type := "00";
+   -- constant uPC1 : uPC_state_type := "01";
+   -- constant uPC2 : uPC_state_type := "10";
+   -- constant uPC3 : uPC_state_type := "11";
+   
+    
+    
+    --constant Tail3 : reg_code := (others => '0');   
+    
+    --opcodes for instructions
 
     constant iADD : opcode := "0000";   --R1    R2  R3  N.U
     constant iSUB : opcode := "0001";   --R1    R2  R3  N.U
@@ -39,6 +40,8 @@ package microcode is
     constant iBRO : opcode := "1110";
     constant iBRA : opcode := "1111";
     
+    --register macrod
+    constant Rx : reg_code := "000";
     constant R0 : reg_code := "000";
     constant R1 : reg_code := "001";
     constant R2 : reg_code := "010";
@@ -48,6 +51,7 @@ package microcode is
     constant R6 : reg_code := "110";
     constant R7 : reg_code := "111";
 
+    constant NU:reg_code:= "000";
     --constant opSUM : op_alu := "000";
     --constant opSUB : op_alu := "001";
     --constant opAND : op_alu := "010";
